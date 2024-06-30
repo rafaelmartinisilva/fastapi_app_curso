@@ -53,8 +53,8 @@ def test_update_user(client):
         json={
             'username': 'Rafael Martini Silva',
             'email': 'rafaelmartinisilva@gmail.com',
-            'password': 'TestRafael'
-        }
+            'password': 'TestRafael',
+        },
     )
 
     # Validar o response code
@@ -74,7 +74,7 @@ def test_update_user_not_found(client):
         json={
             'username': 'Rafael Martini Silva',
             'email': 'rafaelmartinisilva@gmail.com',
-            'password': 'TestRafael'
+            'password': 'TestRafael',
         },
     )
 
@@ -82,6 +82,24 @@ def test_update_user_not_found(client):
     assert response.status_code == HTTPStatus.NOT_FOUND
 
     # Validar o UserPublic
-    assert response.json() == {
-        'detail': 'User not found'
-    }
+    assert response.json() == {'detail': 'User not found'}
+
+
+def test_delete_user(client):
+    response = client.delete('/users/1')
+
+    assert response.status_code == HTTPStatus.OK
+
+    assert response.json() == {'message': 'User deleted'}
+
+
+def test_delete_user_not_found(client):
+    response = client.delete(
+        '/users/2',
+    )
+
+    # Validar o response code
+    assert response.status_code == HTTPStatus.NOT_FOUND
+
+    # Validar o UserPublic
+    assert response.json() == {'detail': 'User not found'}
