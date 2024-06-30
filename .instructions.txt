@@ -45,6 +45,11 @@ git remote add origin https://github.com/rafaelmartinisilva/Frist-FastAPI-APP.gi
 
 git push --set-upstream origin main
 
+
+
 ======================================
 --------------> Aula 2 <--------------
 ======================================
+
+poetry add "pydantic[email]"   % Pacode adicional do pydantic para validar e-mails.
+
