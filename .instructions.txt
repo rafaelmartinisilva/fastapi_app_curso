@@ -1,0 +1,50 @@
+
+======================================
+--------------> Aula 1 <--------------
+======================================
+
+----------------------------------
+----> Ferramentas adicionais <----
+----------------------------------
+pip install pipx     % Install and Run Python Applications in Isolated Environments
+pipx install poetry  % Dependency management and packaging in Python
+pipx ensurepath      % Ensure directory where pipx stores apps is in your PATH environment variable
+
+% reiniciar o terminal para aplicar as mudanças nas variáveis de ambiente após rodar o comando pipx ensure path
+
+sudo apt install gh  % Take GitHub to the command line
+
+
+----------------------------------
+----> Estruturando o Projeto <----
+----------------------------------
+poetry new fast_api   % Cria uma pasta nomeada fast_api com a estrutura do projeto e entre nela
+poetry install        % Inicia um ambiente para o desenvolvimento
+poetry add fastapi    % Instala o FastAPI 
+
+poetry shell          % Ativa o ambiente de desenvolvimento criado com poetry
+
+fastapi dev fast_api/app.py   % Inicia o servidor "web" do FastAPI
+
+poetry add --group dev ruff                 % Ferramenta linter e formatter
+poetry add --group dev pytest pytest-cov    % Framework de testes
+poetry add --group dev taskipy              % 
+
+% Adicionar as configurações do ruff, pytest e taskipy no pyproject.toml
+
+
+git init      % --------------------------------------------------------------> Inicia um repositório git
+git add .     % --------------------------------------------------------------> Adiciona todas as alterações na áre de stage
+git commit -m "WIP: Estrutura e configuração do ambiente de desenvolvimento"  % Executa um commit das alterações
+
+
+gh auth login    % Para realizar a autenticação da ferramenta CLI com o seu GitHub
+gh repo create   % Para criar um repositório no GitHub
+
+git remote add origin https://github.com/rafaelmartinisilva/Frist-FastAPI-APP.git
+
+git push --set-upstream origin main
+
+======================================
+--------------> Aula 2 <--------------
+======================================
