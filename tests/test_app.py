@@ -27,3 +27,21 @@ def test_create_user(client):
         'username': 'Rafael Martini',
         'email': 'rafaelmartinisilva@hotmail.com',
     }
+
+
+def test_read_users(client):
+    response = client.get('/users/')
+
+    # Validar o response code
+    assert response.status_code == HTTPStatus.OK
+
+    # Validar o UserPublic
+    assert response.json() == {
+        'users': [
+            {
+                'id': 1,
+                'username': 'Rafael Martini',
+                'email': 'rafaelmartinisilva@hotmail.com',
+            }
+        ]
+    }
