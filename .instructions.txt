@@ -53,3 +53,17 @@ git push --set-upstream origin main
 
 poetry add "pydantic[email]"   % Pacode adicional do pydantic para validar e-mails.
 
+
+
+======================================
+--------------> Aula 3 <--------------
+======================================
+
+
+
+======================================
+--------------> Aula 4 <--------------
+======================================
+
+poetry add sqlalchemy
+
