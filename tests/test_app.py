@@ -45,3 +45,24 @@ def test_read_users(client):
             }
         ]
     }
+
+
+def test_update_user(client):
+    response = client.put(
+        '/users/1',
+        json={
+            'username': 'Rafael Martini Silva',
+            'email': 'rafaelmartinisilva@gmail.com',
+            'password': 'TestRafael'
+        }
+    )
+
+    # Validar o response code
+    assert response.status_code == HTTPStatus.OK
+
+    # Validar o UserPublic
+    assert response.json() == {
+        'id': 1,
+        'username': 'Rafael Martini Silva',
+        'email': 'rafaelmartinisilva@gmail.com',
+    }
