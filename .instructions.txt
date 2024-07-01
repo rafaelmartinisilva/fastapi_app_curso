@@ -71,3 +71,12 @@ poetry add pydantic-settings
 
 % Criar um arquivo ".env" na raiz da aplicação e inserir o DATABASE_URL com o caminho do banco de dados.
 
+poetry add alembic  % Gerencia migrações de DB
+
+alembic init migrations   % inicia a estutura do alembic na pasta migrations
+
+% Após realizar todas as configurações, executar o comando abaixo para criar uma versão do DB
+
+alembic revision --autogenerate -m "create users table"
+
+alembic upgrade head  % Aplica a migração/Atualiza a versão do DB
