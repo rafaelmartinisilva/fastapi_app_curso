@@ -1,3 +1,7 @@
+
+# Ignore the local Data Base
+database.db
+
 # Ruff
 .ruff_cache/
 

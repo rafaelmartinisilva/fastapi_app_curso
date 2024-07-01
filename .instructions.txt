@@ -67,3 +67,7 @@ poetry add "pydantic[email]"   % Pacode adicional do pydantic para validar e-mai
 
 poetry add sqlalchemy
 
+poetry add pydantic-settings
+
+% Criar um arquivo ".env" na raiz da aplicação e inserir o DATABASE_URL com o caminho do banco de dados.
+
