@@ -31,6 +31,44 @@ def test_create_user(client):
     }
 
 
+def test_create_user_user_already_exist(client, user):
+    response = client.post(
+        '/users/',
+        json={
+            'username': 'Rafael Martini Silva',
+            'email': 'rafaelmartinisilva@hotmail.com',
+            'password': 'Test123',
+        },
+    )
+
+    # Validar o response code
+    assert response.status_code == HTTPStatus.BAD_REQUEST
+
+    # Validar o UserPublic
+    assert response.json() == {
+        'detail': 'Username already exist',
+    }
+
+
+def test_create_user_email_already_exist(client, user):
+    response = client.post(
+        '/users/',
+        json={
+            'username': 'Rafael Martini',
+            'email': 'rafaelmartinisilva@hotmail.com',
+            'password': 'Test123',
+        },
+    )
+
+    # Validar o response code
+    assert response.status_code == HTTPStatus.BAD_REQUEST
+
+    # Validar o UserPublic
+    assert response.json() == {
+        'detail': 'Email already exist',
+    }
+
+
 def test_read_users_without_users(client):
     response = client.get('/users/')
 

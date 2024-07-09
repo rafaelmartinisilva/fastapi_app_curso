@@ -37,13 +37,9 @@ def create_user(user: UserSchema, session: Session = Depends(get_session)):
                 detail='Email already exist',
             )
 
-    print(db_user)
-
     db_user = User(
         username=user.username, email=user.email, password=user.password
     )
-
-    print(db_user)
 
     session.add(db_user)
     session.commit()
@@ -91,9 +87,7 @@ def update_user(
 @app.delete(
     '/users/{user_id}', status_code=HTTPStatus.OK, response_model=Message
 )
-def delete_user(
-    user_id: int, session: Session = Depends(get_session)
-):
+def delete_user(user_id: int, session: Session = Depends(get_session)):
     db_user = session.scalar(select(User).where(User.id == user_id))
     # OU
     # session.get(User, user_id)
