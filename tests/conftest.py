@@ -6,7 +6,7 @@ from sqlalchemy.pool import StaticPool
 
 from fast_api.app import app
 from fast_api.database import get_session
-from fast_api.models import table_registry
+from fast_api.models import User, table_registry
 
 
 @pytest.fixture()
@@ -43,3 +43,18 @@ def session():
     table_registry.metadata.drop_all(engine)  # Destrói o DB após o test
 
     return engine
+
+
+@pytest.fixture()
+def user(session):
+    user_fake = User(
+        username='Rafael Martini Silva',
+        email='rafaelmartinisilva@hotmail.com',
+        password='Test123',
+    )
+
+    session.add(user_fake)
+    session.commit()
+    session.refresh(user_fake)
+
+    return user_fake

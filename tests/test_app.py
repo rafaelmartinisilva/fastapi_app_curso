@@ -1,5 +1,7 @@
 from http import HTTPStatus
 
+from fast_api.schemas import UserPublic
+
 
 def test_root_deve_retornar_ok_e_ola_mundo(client):
     response = client.get('/')  # Act
@@ -29,7 +31,21 @@ def test_create_user(client):
     }
 
 
-def test_read_users(client):
+def test_read_users_without_users(client):
+    response = client.get('/users/')
+
+    # Validar o response code
+    assert response.status_code == HTTPStatus.OK
+
+    # Validar o UserPublic
+    assert response.json() == {'users': []}
+
+
+def test_read_users_with_users(client, user):
+    # Converte o user do modelo do SQLAlchemy para o modelo do
+    # UserPublic do Pydantic -> utilizar o ConfigDict no schema
+    user_schema = UserPublic.model_validate(user).model_dump()
+
     response = client.get('/users/')
 
     # Validar o response code
@@ -38,11 +54,8 @@ def test_read_users(client):
     # Validar o UserPublic
     assert response.json() == {
         'users': [
-            {
-                'id': 1,
-                'username': 'Rafael Martini',
-                'email': 'rafaelmartinisilva@hotmail.com',
-            }
+            # Deve retornar o user no formato UserPublic do Pydantic
+            user_schema
         ]
     }
 
