@@ -24,7 +24,7 @@ class User:
         init=False, server_default=func.now()
     )
     # server_default -> o servidor do DB que define a data e hora
-    
+
     updated_at: Mapped[datetime] = mapped_column(
-        init=False, onupdate=func.now()
+        init=False, nullable=True, onupdate=func.now()
     )

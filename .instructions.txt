@@ -80,3 +80,9 @@ alembic init migrations   % inicia a estutura do alembic na pasta migrations
 alembic revision --autogenerate -m "create users table"
 
 alembic upgrade head  % Aplica a migração/Atualiza a versão do DB
+
+% Para atualizar as colunas do SQLITE, não é possível utilizar o "op.alter_column" do alembic. Dessa foram,
+% se faz necessário utilizar a implementação do "op.batch_alter_table". Então, deve-se alterar os campos neces-
+% sários do schema pertinente, gerar os alembic revision, abrir a versão da migração gerada e modificá-la
+% com o context manager apropriado.
+
