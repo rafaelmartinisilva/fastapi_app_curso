@@ -100,6 +100,12 @@ alembic upgrade head  % Aplica a migração/Atualiza a versão do DB
 
 % pwdlib -> Biblioteca para gerenciar senhas e manipular senhas
 % argon2 -> Algoritmo de hash
-
 poetry add "pwdlib[argon2]"
+
+% Deve-se, também, instalar uma bibliote para multipart
+poetry add python-multipart
+
+% Biblioteca para gerar o JWT (Json Web Token) para assinatura do servidor
+poetry add pyjwt
+
 
