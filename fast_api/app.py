@@ -6,11 +6,9 @@ from sqlalchemy.orm import Session
 
 from fast_api.database import get_session
 from fast_api.models import User
-from fast_api.schemas import Message, UserDB, UserList, UserPublic, UserSchema
+from fast_api.schemas import Message, UserList, UserPublic, UserSchema
 
 app = FastAPI()
-
-database = []  # Criação do banco de dados temporário para testar o CRUD
 
 
 @app.get('/', status_code=HTTPStatus.OK, response_model=Message)
@@ -95,13 +93,15 @@ def delete_user(user_id: int):
     return {'message': 'User deleted'}
 
 
-@app.get(
-    '/users/{user_id}', status_code=HTTPStatus.OK, response_model=UserPublic
-)
-def read_user(user_id: int):
-    if user_id < 1 or user_id > len(database):
-        raise HTTPException(
-            status_code=HTTPStatus.NOT_FOUND, detail='User not found'
-        )
+# Modificar esse endpoint mais tarde
 
-    return database[user_id - 1]
+# @app.get(
+#     '/users/{user_id}', status_code=HTTPStatus.OK, response_model=UserPublic
+# )
+# def read_user(user_id: int):
+#     if user_id < 1 or user_id > len(database):
+#         raise HTTPException(
+#             status_code=HTTPStatus.NOT_FOUND, detail='User not found'
+#         )
+
+#     return database[user_id - 1]
