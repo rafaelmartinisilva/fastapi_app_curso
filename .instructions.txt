@@ -86,3 +86,20 @@ alembic upgrade head  % Aplica a migração/Atualiza a versão do DB
 % sários do schema pertinente, gerar os alembic revision, abrir a versão da migração gerada e modificá-la
 % com o context manager apropriado.
 
+
+
+======================================
+--------------> Aula 5 <--------------
+======================================
+
+
+
+======================================
+--------------> Aula 6 <--------------
+======================================
+
+% pwdlib -> Biblioteca para gerenciar senhas e manipular senhas
+% argon2 -> Algoritmo de hash
+
+poetry add "pwdlib[argon2]"
+
