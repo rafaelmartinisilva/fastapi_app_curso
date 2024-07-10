@@ -1,4 +1,5 @@
 from http import HTTPStatus
+from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
@@ -22,13 +23,22 @@ router = APIRouter(
 
 
 # ########################################################################### #
+# ---------------------- Criando as variáveis Annotated --------------------- #
+# ########################################################################### #
+# Ao definir tipos em Python, a nova padronização da PEP8 orienta a inserir um
+# "T_" antes da variável tipo.
+T_Session = Annotated[Session, Depends(get_session)]
+T_OAuth2Form = Annotated[OAuth2PasswordRequestForm, Depends()]
+
+
+# ########################################################################### #
 # ------------------ Endpoint para criar o token de acesso ------------------ #
 # ########################################################################### #
 @router.post('/token', response_model=Token)
 def login_for_access_token(
     # Formulário para gerar e autorizar o token
-    form_data: OAuth2PasswordRequestForm = Depends(),
-    session: Session = Depends(get_session),
+    session: T_Session,
+    form_data: T_OAuth2Form,
 ):
     user = session.scalar(select(User).where(User.email == form_data.username))
 
