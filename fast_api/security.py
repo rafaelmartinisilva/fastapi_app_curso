@@ -17,7 +17,7 @@ def get_password_hash(password: str):
 
 
 def verify_password(plain_password: str, hashed_password: str):
-    pwd_context.verify(password=plain_password, hash=hashed_password)
+    return pwd_context.verify(password=plain_password, hash=hashed_password)
 
 
 def create_access_token(data: dict):
