@@ -12,14 +12,13 @@ from zoneinfo import ZoneInfo
 
 from fast_api.database import get_session
 from fast_api.models import User
+from fast_api.settings import Settings
 
 pwd_context = PasswordHash.recommended()
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl='auth/token')
 
-SECRET_KEY = 'your-secret-key'
-ALGORITHM = 'HS256'
-ACCESS_TOKEN_EXPIRE = 30
+settings = Settings()
 
 
 def get_password_hash(password: str):
@@ -35,12 +34,14 @@ def create_access_token(data: dict):
 
     # Adiciona um tempo de 30 minutos para expiração
     expire = datetime.now(tz=ZoneInfo('UTC')) + timedelta(
-        minutes=ACCESS_TOKEN_EXPIRE
+        minutes=settings.ACCESS_TOKEN_EXPIRE
     )
 
     to_encode.update({'exp': expire})
     encoded_jwt = encode(
-        payload=to_encode, key=SECRET_KEY, algorithm=ALGORITHM
+        payload=to_encode,
+        key=settings.SECRET_KEY,
+        algorithm=settings.ALGORITHM,
     )
 
     return encoded_jwt
@@ -58,7 +59,9 @@ def get_current_user(
     )
 
     try:
-        payload = decode(jwt=token, key=SECRET_KEY, algorithms=[ALGORITHM])
+        payload = decode(
+            jwt=token, key=settings.SECRET_KEY, algorithms=[settings.ALGORITHM]
+        )
         username: str = payload.get('sub')
         if not username:
             raise credential_exception

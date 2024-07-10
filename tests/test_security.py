@@ -3,9 +3,8 @@ from http import HTTPStatus
 from jwt import decode
 
 from fast_api.security import (
-    ALGORITHM,
-    SECRET_KEY,
     create_access_token,
+    settings,
 )
 
 
@@ -18,7 +17,9 @@ def test_jwt():
 
     token = create_access_token(data=data)
 
-    result = decode(jwt=token, key=SECRET_KEY, algorithms=[ALGORITHM])
+    result = decode(
+        jwt=token, key=settings.SECRET_KEY, algorithms=[settings.ALGORITHM]
+    )
 
     assert result['sub'] == data['sub']
     assert result['exp']
