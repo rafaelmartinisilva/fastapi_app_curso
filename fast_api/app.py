@@ -10,6 +10,7 @@ from fast_api.models import User
 from fast_api.schemas import Message, Token, UserList, UserPublic, UserSchema
 from fast_api.security import (
     create_access_token,
+    get_current_user,
     get_password_hash,
     verify_password,
 )
@@ -58,7 +59,9 @@ def create_user(user: UserSchema, session: Session = Depends(get_session)):
 
 @app.get('/users/', status_code=HTTPStatus.OK, response_model=UserList)
 def read_users(
-    limit: int = 10, skip: int = 0, session: Session = Depends(get_session)
+    limit: int = 10,
+    skip: int = 0,
+    session: Session = Depends(get_session),
 ):
     users = session.scalars(
         select(User).limit(limit=limit).offset(offset=skip)
@@ -71,7 +74,10 @@ def read_users(
     '/users/{user_id}', status_code=HTTPStatus.OK, response_model=UserPublic
 )
 def update_user(
-    user_id: int, user: UserSchema, session: Session = Depends(get_session)
+    user_id: int,
+    user: UserSchema,
+    session: Session = Depends(get_session),
+    current_user=Depends(get_current_user),
 ):
     db_user = session.scalar(select(User).where(User.id == user_id))
     # OU
@@ -95,7 +101,11 @@ def update_user(
 @app.delete(
     '/users/{user_id}', status_code=HTTPStatus.OK, response_model=Message
 )
-def delete_user(user_id: int, session: Session = Depends(get_session)):
+def delete_user(
+    user_id: int,
+    session: Session = Depends(get_session),
+    current_user=Depends(get_current_user),
+):
     db_user = session.scalar(select(User).where(User.id == user_id))
     # OU
     # session.get(User, user_id)

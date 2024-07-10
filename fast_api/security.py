@@ -1,11 +1,17 @@
 from datetime import datetime, timedelta
 
+from fastapi import Depends
+from fastapi.security import OAuth2PasswordBearer
 from jwt import encode
 from pwdlib import PasswordHash
+from sqlalchemy.orm import Session
 from zoneinfo import ZoneInfo
+
+from fast_api.database import get_session
 
 pwd_context = PasswordHash.recommended()
 
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl='token')
 
 SECRET_KEY = 'your-secret-key'
 ALGORITHM = 'HS256'
@@ -34,3 +40,9 @@ def create_access_token(data: dict):
     )
 
     return encoded_jwt
+
+
+def get_current_user(
+    session: Session = Depends(get_session),
+    token: str = Depends(oauth2_scheme),
+): ...
