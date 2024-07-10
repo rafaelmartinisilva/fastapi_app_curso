@@ -42,7 +42,8 @@ lint = 'ruff check . && ruff check . --diff'
 format = 'ruff check . --fix && ruff format .'
 run = 'fastapi dev fast_api/app.py --port 8500'
 pre_test = 'task lint'
-test = 'pytest -s -x --cov=fast_api -vv'
+# test = 'pytest -s -x --cov=fast_api -vv'  # -x -> para no primeiro teste com falha
+test = 'pytest -s --cov=fast_api -vv'
 post_test = 'coverage html'
 
 
