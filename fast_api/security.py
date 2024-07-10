@@ -1,13 +1,17 @@
 from datetime import datetime, timedelta
+from http import HTTPStatus
 
-from fastapi import Depends
+from fastapi import Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
-from jwt import encode
+from jwt import decode, encode
+from jwt.exceptions import PyJWTError
 from pwdlib import PasswordHash
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 from zoneinfo import ZoneInfo
 
 from fast_api.database import get_session
+from fast_api.models import User
 
 pwd_context = PasswordHash.recommended()
 
@@ -45,4 +49,26 @@ def create_access_token(data: dict):
 def get_current_user(
     session: Session = Depends(get_session),
     token: str = Depends(oauth2_scheme),
-): ...
+):
+    # Cria a exceção personalizada
+    credential_exception = HTTPException(
+        status_code=HTTPStatus.UNAUTHORIZED,
+        detail='Could not validate credentials',
+        headers={'WWW-Authenticate': 'Bearer'},
+    )
+
+    try:
+        payload = decode(jwt=token, key=SECRET_KEY, algorithms=[ALGORITHM])
+        username: str = payload.get('sub')
+        if not username:
+            raise credential_exception
+
+    except PyJWTError:
+        raise credential_exception
+
+    user = session.scalar(select(User).where(User.email == username))
+
+    if not user:
+        raise credential_exception
+
+    return user
