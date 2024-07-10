@@ -174,3 +174,40 @@ def test_read_user_not_found(client):
     assert response.status_code == HTTPStatus.NOT_FOUND
 
     assert response.json() == {'detail': 'User not found'}
+
+
+def test_token(client, user):
+    response = client.post(
+        '/token',
+        data={'username': user.email, 'password': user.clean_password},
+    )
+    token = response.json()
+    assert response.status_code == HTTPStatus.OK
+    assert token['token_type'] == 'Bearer'
+    assert 'access_token' in token  # or assert token['access_token']
+
+
+def test_token_incorrect_user_or_email(client, user):
+    response = client.post(
+        '/token',
+        data={'username': 'raf@hot.com', 'password': user.clean_password},
+    )
+
+    # Validar o response code
+    assert response.status_code == HTTPStatus.BAD_REQUEST
+
+    # Validar o UserPublic
+    assert response.json() == {'detail': 'Incorrect email or password'}
+
+
+def test_token_incorrect_password(client, user):
+    response = client.post(
+        '/token',
+        data={'username': user.email, 'password': '12'},
+    )
+
+    # Validar o response code
+    assert response.status_code == HTTPStatus.BAD_REQUEST
+
+    # Validar o UserPublic
+    assert response.json() == {'detail': 'Incorrect email or password'}
