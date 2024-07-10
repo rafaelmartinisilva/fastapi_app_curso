@@ -3,6 +3,9 @@ from sqlalchemy import select
 from fast_api.models import User
 
 
+# ########################################################################### #
+# --- Testa a adição de um usuário no banco de dados
+# ########################################################################### #
 # session proveniente do conftest que prepara o DB
 def test_create_user(session):
     user = User(

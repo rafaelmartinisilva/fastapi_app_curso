@@ -23,9 +23,7 @@ router = APIRouter(
 # ########################################################################### #
 # ------------------- Endpoint para criar um novo usuário ------------------- #
 # ########################################################################### #
-@router.post(
-    '/users/', status_code=HTTPStatus.CREATED, response_model=UserPublic
-)
+@router.post('/', status_code=HTTPStatus.CREATED, response_model=UserPublic)
 def create_user(user: UserSchema, session: Session = Depends(get_session)):
     db_user = session.scalar(
         select(User).where(
@@ -62,7 +60,7 @@ def create_user(user: UserSchema, session: Session = Depends(get_session)):
 # ########################################################################### #
 # ----------------- Endpoint para listar todos os usuários ------------------ #
 # ########################################################################### #
-@router.get('/users/', status_code=HTTPStatus.OK, response_model=UserList)
+@router.get('/', status_code=HTTPStatus.OK, response_model=UserList)
 def read_users(
     limit: int = 10,
     skip: int = 0,
@@ -78,9 +76,7 @@ def read_users(
 # ########################################################################### #
 # -------------- Endpoint para atualizar um usuário existente --------------- #
 # ########################################################################### #
-@router.put(
-    '/users/{user_id}', status_code=HTTPStatus.OK, response_model=UserPublic
-)
+@router.put('/{user_id}', status_code=HTTPStatus.OK, response_model=UserPublic)
 def update_user(
     user_id: int,
     user: UserSchema,
@@ -106,9 +102,7 @@ def update_user(
 # ########################################################################### #
 # --------------- Endpoint para excluir um usuário existente ---------------- #
 # ########################################################################### #
-@router.delete(
-    '/users/{user_id}', status_code=HTTPStatus.OK, response_model=Message
-)
+@router.delete('/{user_id}', status_code=HTTPStatus.OK, response_model=Message)
 def delete_user(
     user_id: int,
     session: Session = Depends(get_session),
@@ -129,9 +123,7 @@ def delete_user(
 # ########################################################################### #
 # ----------------- Endpoint para listar um usuário pelo ID ----------------- #
 # ########################################################################### #
-@router.get(
-    '/users/{user_id}', status_code=HTTPStatus.OK, response_model=UserPublic
-)
+@router.get('/{user_id}', status_code=HTTPStatus.OK, response_model=UserPublic)
 def read_user(user_id: int, session: Session = Depends(get_session)):
     db_user = session.scalar(select(User).where(User.id == user_id))
 

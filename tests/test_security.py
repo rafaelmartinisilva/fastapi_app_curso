@@ -9,6 +9,10 @@ from fast_api.security import (
 )
 
 
+# ########################################################################### #
+# --- Testa a criação de um token para o usuário, verificando se o usuário
+# está correto e se existe uma informação de expiração de sessão.
+# ########################################################################### #
 def test_jwt():
     data = {'sub': 'test@test.com'}
 
@@ -20,6 +24,9 @@ def test_jwt():
     assert result['exp']
 
 
+# ########################################################################### #
+# --- Testa a validação de um token inválido gerado
+# ########################################################################### #
 def test_jwt_invalid_token(client):
     response = client.delete(
         '/users/1', headers={'Authorization': 'Bearer token-invalido'}
@@ -29,6 +36,9 @@ def test_jwt_invalid_token(client):
     assert response.json() == {'detail': 'Could not validate credentials'}
 
 
+# ########################################################################### #
+# ---
+# ########################################################################### #
 # def test_get_current_user_user_not_found(client, user2, session):
 #     data = {'sub': 'rafae@test.com'}
 #     token = create_access_token(data=data)
