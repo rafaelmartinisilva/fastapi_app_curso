@@ -132,24 +132,24 @@ def test_update_user(client, user, token):
 
 
 # ########################################################################### #
-# --- Testa a atualização de um usuário não encontrado
+# --- Testa a atualização de um usuário não autorizado
 # ########################################################################### #
-# def test_update_user_not_found(client, user, token):
-#     response = client.put(
-#         '/users/2',
-#         headers={'Authorization': f'Bearer {token}'},
-#         json={
-#             'username': 'Rafael Martini Silva',
-#             'email': 'rafaelmartinisilva@gmail.com',
-#             'password': 'TestRafael',
-#         },
-#     )
+def test_update_user_not_found(client, user, token):
+    response = client.put(
+        f'/users/{user.id + 1}',
+        headers={'Authorization': f'Bearer {token}'},
+        json={
+            'username': 'Rafael Martini',
+            'email': 'rafaelmartinisilva@gmail.com',
+            'password': 'TestRafael',
+        },
+    )
 
-#     # Validar o response code
-#     assert response.status_code == HTTPStatus.NOT_FOUND
+    # Validar o response code
+    assert response.status_code == HTTPStatus.FORBIDDEN
 
-#     # Validar o UserPublic
-#     assert response.json() == {'detail': 'User not found'}
+    # Validar o UserPublic
+    assert response.json() == {'detail': 'Not enough permissions'}
 
 
 # ########################################################################### #
@@ -167,18 +167,19 @@ def test_delete_user(client, user, token):
 
 
 # ########################################################################### #
-# --- Testa a exclusão de um usuário não encontrado
+# --- Testa a exclusão de um usuário não autorizado
 # ########################################################################### #
-# def test_delete_user_not_found(client, user):
-#     response = client.delete(
-#         '/users/2',
-#     )
+def test_delete_wrong_user(client, user, token):
+    response = client.delete(
+        f'/users/{user.id + 1}',
+        headers={'Authorization': f'Bearer {token}'},
+    )
 
-#     # Validar o response code
-#     assert response.status_code == HTTPStatus.NOT_FOUND
+    # Validar o response code
+    assert response.status_code == HTTPStatus.FORBIDDEN
 
-#     # Validar o UserPublic
-#     assert response.json() == {'detail': 'User not found'}
+    # Validar o UserPublic
+    assert response.json() == {'detail': 'Not enough permissions'}
 
 
 # ########################################################################### #
