@@ -109,3 +109,18 @@ poetry add python-multipart
 poetry add pyjwt
 
 
+
+======================================
+--------------> Aula 7 <--------------
+======================================
+
+
+
+======================================
+--------------> Aula 8 <--------------
+======================================
+
+% factory-boy -> Biblioteca de fábrica de modelos para automatizar a adição de vários usuário no banco de dados
+
+poetry add --group dev factory-boy
+

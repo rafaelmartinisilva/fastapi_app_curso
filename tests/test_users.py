@@ -34,11 +34,13 @@ def test_create_user_user_already_exist(client, user):
     response = client.post(
         '/users/',
         json={
-            'username': 'Rafael Martini Silva',
-            'email': 'rafaelmartinisilva@hotmail.com',
-            'password': 'Test123',
+            'username': user.username,
+            'email': user.email,
+            'password': user.password,
         },
     )
+
+    # print(user)
 
     # Validar o response code
     assert response.status_code == HTTPStatus.BAD_REQUEST
@@ -56,9 +58,9 @@ def test_create_user_email_already_exist(client, user):
     response = client.post(
         '/users/',
         json={
-            'username': 'Rafael Martini',
-            'email': 'rafaelmartinisilva@hotmail.com',
-            'password': 'Test123',
+            'username': f'{user.username}1',
+            'email': user.email,
+            'password': 'test_1+senha',
         },
     )
 
@@ -134,9 +136,9 @@ def test_update_user(client, user, token):
 # ########################################################################### #
 # --- Testa a atualização de um usuário não autorizado
 # ########################################################################### #
-def test_update_user_not_found(client, user, token):
+def test_update_user_not_found(client, other_user, token):
     response = client.put(
-        f'/users/{user.id + 1}',
+        f'/users/{other_user.id}',
         headers={'Authorization': f'Bearer {token}'},
         json={
             'username': 'Rafael Martini',
@@ -169,9 +171,9 @@ def test_delete_user(client, user, token):
 # ########################################################################### #
 # --- Testa a exclusão de um usuário não autorizado
 # ########################################################################### #
-def test_delete_wrong_user(client, user, token):
+def test_delete_wrong_user(client, other_user, token):
     response = client.delete(
-        f'/users/{user.id + 1}',
+        f'/users/{other_user.id}',
         headers={'Authorization': f'Bearer {token}'},
     )
 
@@ -186,14 +188,14 @@ def test_delete_wrong_user(client, user, token):
 # --- Testa a listagem de um usuário por ID
 # ########################################################################### #
 def test_read_user(client, user):
-    response = client.get('/users/1')
+    response = client.get(f'/users/{user.id}')
 
     assert response.status_code == HTTPStatus.OK
 
     assert response.json() == {
-        'id': 1,
-        'username': 'Rafael Martini Silva',
-        'email': 'rafaelmartinisilva@hotmail.com',
+        'id': user.id,
+        'username': f'{user.username}',
+        'email': f'{user.email}',
     }
 
 

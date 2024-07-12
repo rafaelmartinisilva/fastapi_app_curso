@@ -20,6 +20,7 @@ ruff = "^0.5.0"
 pytest = "^8.2.2"
 pytest-cov = "^5.0.0"
 taskipy = "^1.13.0"
+factory-boy = "^3.3.0"
 
 [tool.ruff]
 line-length = 79
@@ -42,8 +43,8 @@ lint = 'ruff check . && ruff check . --diff'
 format = 'ruff check . --fix && ruff format .'
 run = 'fastapi dev fast_api/app.py --port 8500'
 pre_test = 'task lint'
-# test = 'pytest -s -x --cov=fast_api -vv'  # -x -> para no primeiro teste com falha
-test = 'pytest -s --cov=fast_api -vv'
+test = 'pytest -s -x --cov=fast_api -vv'  # -x -> para no primeiro teste com falha
+# test = 'pytest -s --cov=fast_api -vv'
 post_test = 'coverage html'
 
 
