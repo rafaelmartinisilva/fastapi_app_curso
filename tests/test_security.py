@@ -40,12 +40,28 @@ def test_jwt_invalid_token(client):
 # ########################################################################### #
 # ---
 # ########################################################################### #
-# def test_get_current_user_user_not_found(client, user2, session):
-#     data = {'sub': 'rafae@test.com'}
-#     token = create_access_token(data=data)
-#     print(token)
+def test_get_current_user_user_not_found(client):
+    data = {}
+    token = create_access_token(data=data)
 
-#     user = get_current_user(session=session, token=token)
+    response = client.delete(
+        '/users/1', headers={'Authorization': f'Bearer {token}'}
+    )
 
-#     assert user.status_code == HTTPStatus.UNAUTHORIZED
-#     assert user.json() == {'detail': 'Could not validate credentials'}
+    assert response.status_code == HTTPStatus.UNAUTHORIZED
+    assert response.json() == {'detail': 'Could not validate credentials'}
+
+
+# ########################################################################### #
+# ---
+# ########################################################################### #
+def test_get_current_user_user_not_found_2(client):
+    data = {'sub': 'email@test.com'}
+    token = create_access_token(data=data)
+
+    response = client.delete(
+        '/users/1', headers={'Authorization': f'Bearer {token}'}
+    )
+
+    assert response.status_code == HTTPStatus.UNAUTHORIZED
+    assert response.json() == {'detail': 'Could not validate credentials'}
