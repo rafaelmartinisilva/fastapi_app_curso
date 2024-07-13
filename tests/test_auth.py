@@ -49,6 +49,9 @@ def test_token_incorrect_password(client, user):
     assert response.json() == {'detail': 'Incorrect email or password'}
 
 
+# ########################################################################### #
+# --- Testa a validação do token expirado
+# ########################################################################### #
 def test_token_expired_after_time(client, user):
     # Modifica o tempo para que o datetime.now, por exemplo,
     # identifique a data como 14/07/2023 às 12h.

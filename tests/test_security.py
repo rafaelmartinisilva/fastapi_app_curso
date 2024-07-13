@@ -38,7 +38,7 @@ def test_jwt_invalid_token(client):
 
 
 # ########################################################################### #
-# ---
+# --- Test a validação do usuário com um token sem "sub"
 # ########################################################################### #
 def test_get_current_user_user_not_found(client):
     data = {}
@@ -53,7 +53,7 @@ def test_get_current_user_user_not_found(client):
 
 
 # ########################################################################### #
-# ---
+# --- Test a validação do usuário com um token com e-mail errado
 # ########################################################################### #
 def test_get_current_user_user_not_found_2(client):
     data = {'sub': 'email@test.com'}
