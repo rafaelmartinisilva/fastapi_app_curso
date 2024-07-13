@@ -11,6 +11,7 @@ from fast_api.models import User
 from fast_api.schemas import Token
 from fast_api.security import (
     create_access_token,
+    get_current_user,
     verify_password,
 )
 
@@ -51,3 +52,13 @@ def login_for_access_token(
     access_token = create_access_token(data={'sub': user.email})
 
     return {'access_token': access_token, 'token_type': 'Bearer'}
+
+
+# ########################################################################### #
+# ---------------- Endpoint para revalidar o token do usuário --------------- #
+# ########################################################################### #
+@router.post('/refresh_token', response_model=Token)
+def refresh_access_token(user: User = Depends(get_current_user)):
+    new_access_token = create_access_token(data={'sub': user.email})
+
+    return {'access_token': new_access_token, 'token_type': 'bearer'}
