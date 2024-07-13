@@ -121,6 +121,8 @@ poetry add pyjwt
 ======================================
 
 % factory-boy -> Biblioteca de fábrica de modelos para automatizar a adição de vários usuário no banco de dados
-
 poetry add --group dev factory-boy
+
+% freezegun -> Biblioteca de controle do tempo para realizar testes que envolvem token expirados
+poetry add --group dev freezegun
 
