@@ -1,12 +1,19 @@
+from http import HTTPStatus
 from typing import Annotated
 
 from fastapi import APIRouter, Depends
+from fastapi.exceptions import HTTPException
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from fast_api.database import get_session
 from fast_api.models import Todo, TodoState, User
-from fast_api.schemas import TodoList, TodoPublic, TodoSchema
+from fast_api.schemas import (
+    Message,
+    TodoList,
+    TodoPublic,
+    TodoSchema,
+)
 from fast_api.security import get_current_user
 
 router = APIRouter(
@@ -15,12 +22,12 @@ router = APIRouter(
 )
 
 
-SessionTunnel = Annotated[Session, Depends(get_session)]
-CurrentUser = Annotated[User, Depends(get_current_user)]
+Session_T = Annotated[Session, Depends(get_session)]
+CurrentUser_T = Annotated[User, Depends(get_current_user)]
 
 
 @router.post('/', response_model=TodoPublic)
-def create_todo(todo: TodoSchema, session: SessionTunnel, user: CurrentUser):
+def create_todo(todo: TodoSchema, session: Session_T, user: CurrentUser_T):
     db_todo = Todo(
         title=todo.title,
         description=todo.description,
@@ -37,8 +44,8 @@ def create_todo(todo: TodoSchema, session: SessionTunnel, user: CurrentUser):
 
 @router.get('/', response_model=TodoList)
 def list_todos(  # noqa
-    session: SessionTunnel,
-    user: CurrentUser,
+    session: Session_T,
+    user: CurrentUser_T,
     title: str | None = None,
     description: str | None = None,
     state: TodoState | None = None,
@@ -61,3 +68,21 @@ def list_todos(  # noqa
     ).all()
 
     return {'todos': todos}
+
+
+@router.delete('/{todo_id}', response_model=Message)
+def delete_todo(todo_id: int, session: Session_T, user: CurrentUser_T):
+    todo = session.scalar(
+        select(Todo).where(Todo.user_id == user.id, Todo.id == todo_id)
+    )
+
+    if not todo:
+        raise HTTPException(
+            status_code=HTTPStatus.NOT_FOUND, detail='Task not found.'
+        )
+
+    session.delete(todo)
+    session.commit()
+
+    return {'message': 'Task has been deleted successfully.'}
+
