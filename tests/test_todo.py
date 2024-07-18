@@ -204,3 +204,64 @@ def test_delete_todo_error(session, user, client, token):
 
     assert response.json() == {'detail': 'Task not found.'}
 
+
+# ########################################################################### #
+# --- Testa a atualização de uma tarefa todo não existente no DB
+# ########################################################################### #
+def test_patch_todo_error(session, user, client, token):
+    todo = TodoFactory(user_id=user.id)
+    session.add(todo)
+    session.commit()
+    # session.refresh(todo) # Não é necessário, mas por quê?
+
+    response = client.patch(
+        f'/todos/{3}', headers={'Authorization': f'Bearer {token}'}, json={}
+    )
+
+    assert response.status_code == HTTPStatus.NOT_FOUND
+
+    assert response.json() == {'detail': 'Task not found.'}
+
+
+# ########################################################################### #
+# --- Testa a atualização vazia de uma tarefa todo existente no DB
+# ########################################################################### #
+def test_patch_todo_empty_update(session, user, client, token):
+    todo = TodoFactory(user_id=user.id)
+    session.add(todo)
+    session.commit()
+    # session.refresh(todo)  # Não é necessário, mas por quê?
+
+    response = client.patch(
+        f'/todos/{todo.id}',
+        headers={'Authorization': f'Bearer {token}'},
+        json={},
+    )
+
+    assert response.status_code == HTTPStatus.OK
+
+    assert response.json() == {
+        'id': todo.id,
+        'title': todo.title,
+        'description': todo.description,
+        'state': todo.state,
+    }
+
+
+# ########################################################################### #
+# --- Testa a atualização vazia de uma tarefa todo existente no DB
+# ########################################################################### #
+def test_patch_todo(session, user, client, token):
+    todo = TodoFactory(user_id=user.id)
+    session.add(todo)
+    session.commit()
+
+    response = client.patch(
+        f'/todos/{todo.id}',
+        headers={'Authorization': f'Bearer {token}'},
+        json={'title': 'Test de title update'},
+    )
+
+    assert response.status_code == HTTPStatus.OK
+
+    assert response.json()['title'] == 'Test de title update'
