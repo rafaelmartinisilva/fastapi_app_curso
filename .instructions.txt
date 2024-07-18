@@ -138,3 +138,21 @@ poetry add --group dev freezegun
 alembic revision --autogenerate -m "create todos table"
 alembic upgrade head
 
+
+
+% Acrescentar duas colunas no DB Todo (created_at e updated_at), executar o comando abaixo para criar uma versão do DB
+
+alembic revision --autogenerate -m "create created_at and updated_at fields"
+
+% Para atualizar as colunas do SQLITE, não é possível utilizar o "op.alter_column" do alembic. Dessa foram,
+% se faz necessário utilizar a implementação do "op.batch_alter_table". Então, deve-se alterar os campos neces-
+% sários do schema pertinente, gerar os alembic revision, abrir a versão da migração gerada e modificá-la
+% com o context manager apropriado.
+
+% OBS.: Não consegui fazer a migração do estado atual do banco (com alguns usuários já criados). Tive que deletar o database.db 
+% e aplicar o alembic upgrade head para gerar o DB do zero, pois estava dando erro quando ia criar a coluna created_at nos 
+% usuários existentes
+
+alembic upgrade head  % Aplica a migração/Atualiza a versão do DB
+
+

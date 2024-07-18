@@ -51,3 +51,14 @@ class Todo:
 
     # Toda tarefa pertence a alguém
     user_id: Mapped[int] = mapped_column(ForeignKey('users.id'))
+
+    created_at: Mapped[datetime] = mapped_column(
+        init=False,
+        server_default=func.now(),
+        # nullable=True, default=0
+    )
+    # server_default -> o servidor do DB que define a data e hora
+
+    updated_at: Mapped[datetime] = mapped_column(
+        init=False, nullable=True, onupdate=func.now()
+    )

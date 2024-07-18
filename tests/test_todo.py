@@ -24,6 +24,8 @@ def test_create_todo(client, token):
         'title': 'Test todo',
         'description': 'Test todo description',
         'state': 'draft',
+        'created_at': response.json()['created_at'],
+        'updated_at': None,
     }
 
 
@@ -238,6 +240,12 @@ def test_patch_todo_empty_update(session, user, client, token):
         json={},
     )
 
+    # Format the datetime fields to match the expected format
+    created_at = todo.created_at.isoformat()
+    updated_at = (
+        None if todo.updated_at is None else todo.updated_at.isoformat()
+    )
+
     assert response.status_code == HTTPStatus.OK
 
     assert response.json() == {
@@ -245,11 +253,14 @@ def test_patch_todo_empty_update(session, user, client, token):
         'title': todo.title,
         'description': todo.description,
         'state': todo.state,
+        'created_at': created_at,
+        'updated_at': updated_at,
     }
 
 
+
 # ########################################################################### #
-# --- Testa a atualização vazia de uma tarefa todo existente no DB
+# --- Testa a atualização do title de uma tarefa todo existente no DB
 # ########################################################################### #
 def test_patch_todo(session, user, client, token):
     todo = TodoFactory(user_id=user.id)
