@@ -38,3 +38,7 @@ class TodoSchema(BaseModel):
 
 class TodoPublic(TodoSchema):
     id: int
+
+
+class TodoList(BaseModel):
+    todos: list[TodoPublic]
