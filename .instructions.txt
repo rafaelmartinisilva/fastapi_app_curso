@@ -126,3 +126,15 @@ poetry add --group dev factory-boy
 % freezegun -> Biblioteca de controle do tempo para realizar testes que envolvem token expirados
 poetry add --group dev freezegun
 
+
+
+
+======================================
+--------------> Aula 9 <--------------
+======================================
+
+% Após modificar os models.py para criar a tabela para receber as tarefas Todo, deve-se realizar a migração do banco de dados
+
+alembic revision --autogenerate -m "create todos table"
+alembic upgrade head
+
