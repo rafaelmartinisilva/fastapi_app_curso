@@ -166,3 +166,41 @@ def test_list_todos_filter_combined_should_return_5_todos(
     )
 
     assert len(response.json()['todos']) == expected_todos
+
+
+# ########################################################################### #
+# --- Testa a remoção de uma tarefa todo do DB
+# ########################################################################### #
+def test_delete_todo(session, user, client, token):
+    todo = TodoFactory(user_id=user.id)
+    session.add(todo)
+    session.commit()
+
+    response = client.delete(
+        f'/todos/{todo.id}', headers={'Authorization': f'Bearer {token}'}
+    )
+
+    assert response.status_code == HTTPStatus.OK
+
+    assert response.json() == {
+        'message': 'Task has been deleted successfully.'
+    }
+
+
+# ########################################################################### #
+# --- Testa a remoção de uma tarefa todo não existente no DB
+# ########################################################################### #
+def test_delete_todo_error(session, user, client, token):
+    todo = TodoFactory(user_id=user.id)
+    session.add(todo)
+    session.commit()
+    # session.refresh(todo) # Não é necessário, mas por quê?
+
+    response = client.delete(
+        f'/todos/{3}', headers={'Authorization': f'Bearer {token}'}
+    )
+
+    assert response.status_code == HTTPStatus.NOT_FOUND
+
+    assert response.json() == {'detail': 'Task not found.'}
+
