@@ -183,3 +183,16 @@ alembic upgrade head
 % que gerencia automaticamente container, fazendo-se com que o banco de dados de teste em container seja executado de forma transparente.
 
 poetry add --group dev testcontainers
+
+
+% Cria um Dockerfile para criar a imagem da aplicação
+docker build -t fast_api .
+
+% Rodar o container com o app
+docker run -it -p 9500:9500 --name FastAPI_APP fast_api
+
+% Deve-se criar um docker compose para rodar o banco de dados e a aplicação.
+
+% Para resolver o problema das migrações co banco de dados é necessário executar o alembic upgrade head. Para isso, cria-se um bash para 
+% executar as migrações e, posteriormente, o início da aplicação. Para poder executar o entrypoint.sh, deve-se editar o modo do arquivo:
+chmod +x entrypoint.sh

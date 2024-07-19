@@ -62,7 +62,6 @@ def engine():
 
 @pytest.fixture()
 def session(engine):
-
     # Cria toda a estrtutura do DB
     table_registry.metadata.create_all(engine)
 
