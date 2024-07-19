@@ -4,7 +4,7 @@ import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
-from sqlalchemy.pool import StaticPool
+from testcontainers.postgres import PostgresContainer
 
 from fast_api.app import app
 from fast_api.database import get_session
@@ -50,23 +50,21 @@ def client(session):
 
 @pytest.fixture()
 def session():
-    # Cria uma conexão com o DB em memória
-    engine = create_engine(
-        'sqlite:///:memory:',
-        connect_args={'check_same_thread': False},
-        poolclass=StaticPool,
-    )
+    with PostgresContainer('postgres:16', driver='psycopg') as postgres:
+        # Cria uma conexão com o DB em memória
+        engine = create_engine(postgres.get_connection_url())
 
-    table_registry.metadata.create_all(engine)  # Cria toda a estrtutura do DB
+        # Cria toda a estrtutura do DB
+        table_registry.metadata.create_all(engine)
 
-    with Session(engine) as session:
-        # Transforma a session engine em um gerador e passa para a chamada da
-        # função de test
-        yield session
+        with Session(engine) as session:
+            # Transforma a session engine em um gerador e passa
+            # para a chamada da função de test
+            yield session
 
-    # O test acontece entre a criação do DB e sua destruição
+        # O test acontece entre a criação do DB e sua destruição
 
-    table_registry.metadata.drop_all(engine)  # Destrói o DB após o test
+        table_registry.metadata.drop_all(engine)  # Destrói o DB após o test
 
     return engine
 

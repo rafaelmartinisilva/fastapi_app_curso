@@ -258,7 +258,6 @@ def test_patch_todo_empty_update(session, user, client, token):
     }
 
 
-
 # ########################################################################### #
 # --- Testa a atualização do title de uma tarefa todo existente no DB
 # ########################################################################### #

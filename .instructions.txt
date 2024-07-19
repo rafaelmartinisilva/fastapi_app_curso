@@ -178,3 +178,8 @@ poetry add "psycopg[binary]"
 
 % Depois, deve-se aplicar as migrações para o novo DB
 alembic upgrade head
+
+% Para testar a aplicação sem alterar o banco de dados de produção executado nos passos anteriores, pode-se utilizar uma ferramenta 
+% que gerencia automaticamente container, fazendo-se com que o banco de dados de teste em container seja executado de forma transparente.
+
+poetry add --group dev testcontainers
