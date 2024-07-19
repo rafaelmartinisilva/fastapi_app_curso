@@ -156,3 +156,25 @@ alembic revision --autogenerate -m "create created_at and updated_at fields"
 alembic upgrade head  % Aplica a migração/Atualiza a versão do DB
 
 
+
+
+=======================================
+--------------> Aula 10 <--------------
+=======================================
+
+
+% O banco de dados será alterado do SQLite para o Postgres. Para isso, deve-se, primeiramente, executar o postgres com docker
+docker run \
+    --name app_database \
+    -e POSTGRES_USER=app_user \
+    -e POSTGRES_DB=app_db \
+    -e POSTGRES_PASSWORD=app_password \
+    -p 5432:5432 \
+    postgres
+
+
+% Precisamos instalar o driver para o postgres na nossa aplicação:
+poetry add "psycopg[binary]"
+
+% Depois, deve-se aplicar as migrações para o novo DB
+alembic upgrade head
