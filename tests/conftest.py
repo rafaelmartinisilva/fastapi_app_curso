@@ -48,23 +48,32 @@ def client(session):
     app.dependency_overrides.clear()
 
 
-@pytest.fixture()
-def session():
+@pytest.fixture(scope='session')
+def engine():
     with PostgresContainer('postgres:16', driver='psycopg') as postgres:
         # Cria uma conexão com o DB em memória
-        engine = create_engine(postgres.get_connection_url())
+        _engine = create_engine(postgres.get_connection_url())
 
-        # Cria toda a estrtutura do DB
-        table_registry.metadata.create_all(engine)
-
-        with Session(engine) as session:
+        with _engine.begin():
             # Transforma a session engine em um gerador e passa
             # para a chamada da função de test
-            yield session
+            yield _engine
 
-        # O test acontece entre a criação do DB e sua destruição
 
-        table_registry.metadata.drop_all(engine)  # Destrói o DB após o test
+@pytest.fixture()
+def session(engine):
+
+    # Cria toda a estrtutura do DB
+    table_registry.metadata.create_all(engine)
+
+    with Session(engine) as session:
+        # Transforma a session engine em um gerador e passa
+        # para a chamada da função de test
+        yield session
+
+    # O test acontece entre a criação do DB e sua destruição
+
+    table_registry.metadata.drop_all(engine)  # Destrói o DB após o test
 
     return engine
 
