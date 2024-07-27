@@ -196,3 +196,19 @@ docker run -it -p 9500:9500 --name FastAPI_APP fast_api
 % Para resolver o problema das migrações co banco de dados é necessário executar o alembic upgrade head. Para isso, cria-se um bash para 
 % executar as migrações e, posteriormente, o início da aplicação. Para poder executar o entrypoint.sh, deve-se editar o modo do arquivo:
 chmod +x entrypoint.sh
+
+
+
+
+=======================================
+--------------> Aula 11 <--------------
+=======================================
+
+% Para implementar o CI no github, inicialmente deve-se criar as seguintes pastas:
+
+./github/workflows/
+
+% e no interior dessa pasta criar um arquivo ".yaml", com qualquer nome, que contém os comandos do actions.
+
+./github/workflows/Pipeline.yaml
+

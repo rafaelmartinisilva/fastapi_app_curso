@@ -1,0 +1,16 @@
+name: Pipeline                                # Actions name
+on: [push, pull_request]                      # Trigger command
+
+jobs:                                         # Job for execution in the actions
+  test:                                       # first job name
+    runs-on: ubuntu-latest                    # Running OS
+
+    steps:                                    # Each step of the job
+      - name: Copy repository files           # Name of the first step
+        uses: actions/checkout@v3             # Use a builtin actions code of the github for copying the app file to the CI OS
+
+      - name: Install Python                  # Name of the second step
+        uses: actions/setup-python@v5         # Use a builtin actions code of the github for python installation
+        with:
+          python-version: '3.12'              # Provide the python version for installation
+
