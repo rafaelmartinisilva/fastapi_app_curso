@@ -9,7 +9,7 @@ jobs:                                         # Job for execution in the actions
       DATABASE_URL: ${{secrets.DATABASE_URL}}
       SECRET_KEY: ${{secrets.SECRET_KEY}}
       ALGORITHM: ${{secrets.ALGORITHM}}
-      ACCESS_TOKEN_EXPIRE_MINUTES: ${{secrets.ACCESS_TOKEN_EXPIRE_MINUTES}}
+      ACCESS_TOKEN_EXPIRE: ${{secrets.ACCESS_TOKEN_EXPIRE}}
 
     steps:                                    # Each step of the job
       - name: Copy repository files           # Name of the first step
