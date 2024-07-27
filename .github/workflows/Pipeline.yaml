@@ -26,3 +26,6 @@ jobs:                                         # Job for execution in the actions
       - name: Install dependencies
         run: poetry install
 
+      - name: Execute tests
+        run: poetry run task test
+
