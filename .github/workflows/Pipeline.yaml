@@ -5,6 +5,12 @@ jobs:                                         # Job for execution in the actions
   test:                                       # first job name
     runs-on: ubuntu-latest                    # Running OS
 
+    env:                                      # Point the environment variables of the app to the secrets exported to the Github
+      DATABASE_URL: ${{secrets.DATABASE_URL}}
+      SECRET_KEY: ${{secrets.SECRET_KEY}}
+      ALGORITHM: ${{secrets.ALGORITHM}}
+      ACCESS_TOKEN_EXPIRE_MINUTES: ${{secrets.ACCESS_TOKEN_EXPIRE_MINUTES}}
+
     steps:                                    # Each step of the job
       - name: Copy repository files           # Name of the first step
         uses: actions/checkout@v3             # Use a builtin actions code of the github for copying the app file to the CI OS

@@ -212,3 +212,17 @@ chmod +x entrypoint.sh
 
 ./github/workflows/Pipeline.yaml
 
+
+% Para executar todas as ações dos testes é necessário algumas variáveis de ambiente, tais como a url do banco de dados, senhas, etc.
+% No entanto, por questões de segurança, como não deve-se mandar para o repositório o arquivo ".env", necessita-se, de alguma forma,
+% criar as variávies de ambiente diretamente no git para que seja possível utilizar o CI (Github actions).
+
+% Há duas formas de criar as variávies: uma diretamente na web no site do github, a outro utilizando o cli "gh", que é mais fácil.
+
+gh secret set -f .env
+
+% Este comando replica as variávies de ambiente diretamente no Github e, como o conteúdo delas não pode ser lido, é uma maneira para 
+% executar a aplicação com as variávies sensíveis necessárias.
+
+% Após exportar as secrets, deve-se informá-las no "Pipeline.yaml"
+
