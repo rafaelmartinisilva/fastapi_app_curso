@@ -226,3 +226,9 @@ gh secret set -f .env
 
 % Após exportar as secrets, deve-se informá-las no "Pipeline.yaml"
 
+
+% OBS.:
+% É possível rodar um equivalente ao GitHub Actions local com a ferramenta nektos/act: para detalhes, acessar:
+
+https://github.com/nektos/act
+
