@@ -232,3 +232,16 @@ gh secret set -f .env
 
 https://github.com/nektos/act
 
+
+
+
+=======================================
+--------------> Aula 12 <--------------
+=======================================
+
+% Deploy da aplicação na plataforma Fly.io
+
+% Para facilitar as configurações e deploy, é recomendado instalar o flyctl:
+
+curl -L https://fly.io/install.sh | sh
+
