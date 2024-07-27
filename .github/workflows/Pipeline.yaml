@@ -14,3 +14,9 @@ jobs:                                         # Job for execution in the actions
         with:
           python-version: '3.12'              # Provide the python version for installation
 
+      - name: Install poetry
+        run: pipx install poetry
+
+      - name: Install dependencies
+        run: poetry install
+
